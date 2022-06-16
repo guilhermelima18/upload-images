@@ -1,3 +1,9 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable no-nested-ternary */
+/* eslint-disable react/jsx-no-bind */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+/* eslint-disable prettier/prettier */
+
 import {
   Modal,
   ModalOverlay,
@@ -6,6 +12,7 @@ import {
   ModalBody,
   Image,
   Link,
+  Box,
 } from '@chakra-ui/react';
 
 interface ModalViewImageProps {
@@ -19,5 +26,29 @@ export function ModalViewImage({
   onClose,
   imgUrl,
 }: ModalViewImageProps): JSX.Element {
-  // TODO MODAL WITH IMAGE AND EXTERNAL LINK
+  return (
+    <Modal isOpen={isOpen} onClose={onClose} isCentered>
+      <ModalOverlay />
+      <ModalContent bg="black">
+        <ModalBody>
+          <Box w="100%" display="flex">
+            <Image
+              w="100%"
+              maxW="900px"
+              h="100%"
+              maxH="600px"
+              src={imgUrl}
+              alt={imgUrl}
+            />
+          </Box>
+        </ModalBody>
+
+        <ModalFooter bg="pGray.800">
+          <Link href={imgUrl} isExternal>
+            Abrir original
+          </Link>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
 }

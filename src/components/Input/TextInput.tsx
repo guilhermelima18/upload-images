@@ -12,11 +12,12 @@ import { FiAlertCircle } from 'react-icons/fi';
 
 interface InputProps extends ChakraInputProps {
   name: string;
+  type: string;
   error?: FieldError;
 }
 
 const TextInputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
-  { name, error = null, ...rest },
+  { name, type, error = null, ...rest },
   ref
 ) => {
   return (
@@ -29,6 +30,7 @@ const TextInputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
       <ChakraInput
         aria-label={name}
         name={name}
+        type={type}
         ref={ref}
         borderColor="transparent"
         bgColor="pGray.800"
