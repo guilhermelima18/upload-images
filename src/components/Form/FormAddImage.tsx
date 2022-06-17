@@ -24,14 +24,30 @@ type ImageData = {
   url: string;
 };
 
+type FormImageData = {
+  image: File;
+  title: string;
+  description: string;
+};
+
 export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
   const [imageUrl, setImageUrl] = useState('');
   const [localImageUrl, setLocalImageUrl] = useState('');
   const toast = useToast();
 
+  const acceptedFormatsRegex =
+    /(?:([^:/?#]+):)?(?:([^/?#]*))?([^?#](?:jpeg|gif|png))(?:\?([^#]*))?(?:#(.*))?/g;
+
   const formValidations = {
     image: {
       required: 'Arquivo obrigatório',
+      validate: {
+        lessThan10MB: fileList =>
+          fileList[0].size < 10000000 || 'O arquivo deve ser menor que 10MB',
+        acceptedFormats: fileList =>
+          acceptedFormatsRegex.test(fileList[0].type) ||
+          'Somente são aceitos arquivos PNG, JPEG e GIF',
+      },
     },
     title: {
       required: 'Título obrigatório',
@@ -67,20 +83,18 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
     }
   );
 
-  const { register, handleSubmit, resetField, formState, setError, trigger } =
+  const { register, handleSubmit, reset, formState, setError, trigger } =
     useForm();
   const { errors } = formState;
 
-  const onCreateImageSubmit = async (data: any): Promise<void> => {
+  const onSubmit = async (data: FormImageData): Promise<void> => {
     try {
       if (!imageUrl) {
         toast({
           title: 'Imagem não adicionada',
           description:
             'É preciso adicionar e aguardar o upload de uma imagem antes de realizar o cadastro.',
-          status: 'info',
-          duration: 9000,
-          isClosable: true,
+          status: 'error',
         });
 
         return;
@@ -98,26 +112,23 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
         title: 'Imagem cadastrada',
         description: 'Sua imagem foi cadastrada com sucesso.',
         status: 'success',
-        duration: 9000,
-        isClosable: true,
       });
     } catch {
       toast({
         title: 'Falha no cadastro',
         description: 'Ocorreu um erro ao tentar cadastrar a sua imagem.',
         status: 'error',
-        duration: 9000,
-        isClosable: true,
       });
     } finally {
-      resetField('title');
-      resetField('description');
+      reset();
+      setImageUrl('');
+      setLocalImageUrl('');
       closeModal();
     }
   };
 
   return (
-    <Box as="form" width="100%" onSubmit={handleSubmit(onCreateImageSubmit)}>
+    <Box as="form" width="100%" onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={4}>
         <FileInput
           setImageUrl={setImageUrl}

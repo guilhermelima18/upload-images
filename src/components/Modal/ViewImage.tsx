@@ -27,7 +27,7 @@ export function ModalViewImage({
   imgUrl,
 }: ModalViewImageProps): JSX.Element {
   return (
-    <Modal isOpen={isOpen} onClose={onClose} isCentered>
+    <Modal isOpen={isOpen} size="4xl" onClose={onClose} isCentered>
       <ModalOverlay />
       <ModalContent bg="black">
         <ModalBody>
@@ -44,9 +44,11 @@ export function ModalViewImage({
         </ModalBody>
 
         <ModalFooter bg="pGray.800">
-          <Link href={imgUrl} isExternal>
-            Abrir original
-          </Link>
+          <Box w="100%" display="flex">
+            <Link href={imgUrl} isExternal>
+              Abrir original
+            </Link>
+          </Box>
         </ModalFooter>
       </ModalContent>
     </Modal>

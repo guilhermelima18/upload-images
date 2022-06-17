@@ -1,3 +1,9 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable no-nested-ternary */
+/* eslint-disable react/jsx-no-bind */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+/* eslint-disable prettier/prettier */
+
 import { screen, render, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ChakraProvider } from '@chakra-ui/react';
